@@ -7,7 +7,7 @@ async function getTask(req,res){
 
 async function getUserTask(req,res){
   userId = req.params.id;
-  const tasks =  await model.Task.findOne({where:{userId:userId},include:[model.User,attributes['firstName','lastName']]})
+  const tasks =  await model.Task.findOne({where:{userId:userId},include:{model:model.User, attributes:['firstName','lastName']}})
   res.json(tasks)
 }
 
