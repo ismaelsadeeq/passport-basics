@@ -1,20 +1,21 @@
 const model = require('../models');
 
 async function getTask(req,res){
-  const tasks = await model.Task.findAll({attributes:['content']});
+  const tasks = await model.Task.findAll({include:[model.User],attributes:['content']});
   res.json(tasks);
 }
 
 async function getUserTask(req,res){
   userId = req.params.id;
-  const tasks =  await model.Task.findOne({where:{userId:userId},include:[model.User]})
-  res.json(task)
+  const tasks =  await model.Task.findOne({where:{userId:userId},include:[model.User,attributes['firstName','lastName']]})
+  res.json(tasks)
 }
 
 async function updateTask(req,res){
   userId = req.params.id;
   taskId = req.params.taskId;
-  const task = await model.Task.update({content:req.body},{where:{id:taskId,userId:userId}})
+  const data = req.body;
+  const task = await model.Task.update({content:data.content,userId:userId},{where:{id:taskId,userId:userId}})
   res.json('task updated');
 }
 
