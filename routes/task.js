@@ -6,5 +6,5 @@ const controller = require('../controllers/task.controller')
 router.get('/', controller.getTask)
 router.get('/:id', controller.getUserTask)
 router.put('/:id/task/:taskId', controller.updateTask)
-router.post('/', controller.createTask)
+router.post('/:id', controller.createTask)
 module.exports = router;

@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
   Task.init({
-    item: DataTypes.STRING,
+    content: DataTypes.STRING,
     userId: {
       allowNull: false,
       type: DataTypes.INTEGER

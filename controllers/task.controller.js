@@ -1,8 +1,7 @@
 const model = require('../models');
 
-async function getTask(res){
-
-  const tasks = await model.Task.findAll({attributes:['item']});
+async function getTask(req,res){
+  const tasks = await model.Task.findAll({attributes:['content']});
   res.json(tasks);
 }
 
@@ -15,13 +14,14 @@ async function getUserTask(req,res){
 async function updateTask(req,res){
   userId = req.params.id;
   taskId = req.params.taskId;
-  const task = await model.Task.update({item:req.body},{where:{id:taskId,userId:userId}})
+  const task = await model.Task.update({content:req.body},{where:{id:taskId,userId:userId}})
   res.json('task updated');
 }
 
 async function createTask(req,res){
-
-  const task = await model.Task.create(req.body)
+  userId = req.params.id
+  const data = req.body;
+  const task = await model.Task.create({content:data.content,userId:userId})
   res.json('Task created')
 };
 
