@@ -7,7 +7,7 @@ const users = models.User;
 
 const jwtOptions ={}
 
-jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken;
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 
 jwtOptions.secretOrKey = "mySecret";
 

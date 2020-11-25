@@ -5,6 +5,6 @@ const passport = require('passport')
 
 /* GET users listing. */
 router.get('/', controller.getData)
-router.get('/:id', passport.authenticate("jwt",{session:false}), controller.getsingleUser )
+router.get('/get', passport.authenticate("jwt",{session:false}), controller.getsingleUser )
 router.post('/', controller.createUser)
 module.exports = router;

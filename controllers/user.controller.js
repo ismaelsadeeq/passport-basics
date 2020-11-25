@@ -7,7 +7,7 @@ async function getData(req,res){
 
 async function getsingleUser(req,res){
 
-  const users = await model.User.findAll({where:{id:req.params.id}});
+  const users = await model.User.findAll({where:{id:req.user.id}});
   res.json(users)
 }
 async function createUser(req,res){
