@@ -4,11 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const passport = require('passport')
+const multer = require('multer');
+const helpers = require('./config/helper')
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var taskRouter = require('./routes/task')
+
+// var multerConfig = require('./config/multer');
 
 var app = express();
 
@@ -27,6 +31,18 @@ require('./config/passport')(passport);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/task', taskRouter);
+
+const storage = multer.diskStorage({
+    
+  destination : (req, file, cb) => {
+   cb(null,"images/");
+ }, 
+
+ filename : (req,file,cb) => {
+   cb(null,file.fieldname + "_"+ Date.now() + path.extname(file.originalname))
+ }
+})
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -4,6 +4,7 @@ const JwtStartegy = require('passport-jwt').Strategy;
 const jwt = require('jsonwebtoken');
 
 
+
 async function register(req,res){
 
   const saltRounds = 10
@@ -53,16 +54,16 @@ async function  login(req,res){
     if (!checkPassword) {
       return res.json('Incorrect passsword')
     } else {
-    const payload ={
-      id:user.id,
-    }
-    const token = jwt.sign(payload,"mySecret");
-    return res.json(
-      { "token":token,
-        "data":user,
-        "statusCode":200
+      const jwt_payload ={
+        id:user.id,
       }
-      )
+      const token = jwt.sign(jwt_payload,"mySecret");
+      return res.json(
+        { "token":token,
+          "data":user,
+          "statusCode":200
+        }
+        )
     }
   } else {
     return res.json('No account found ')
