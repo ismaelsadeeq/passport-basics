@@ -1,7 +1,8 @@
 const multer = require('multer');
-const storage = require('../config/multer');
 const model = require('../models');
 const helpers = require('../config/helper')
+const multerConfig = require('../config/multer')
+
 
 async function getData(req,res){
 
@@ -14,28 +15,43 @@ async function getsingleUser(req,res){
   res.json(users)
 }
 
+
 async function uploadProfilePicture(req,res){
 
- const upload = multer({
-   storage:storage,
-   fileFilter:helpers.imageFilter
+    multerConfig.singleUpload(req, res, function(err) {
 
- }).single("profile_picture");
+    if (err instanceof multer.MulterError) {
+        return res.json(err.message);
+    } 
+    else if (err) {
+      return res.json(err);
+    } 
+    else if (!req.file) {
+      return res.json({"image": req.file, "msg":'Please select an image to upload'});
+    }
+    if(req.file){
+      return  res.json({'msg': 'uploaded',
+      'file':req.file});
+    } 
 
- upload(req,res, (err)=>{
-  if (req.file) {
-    return res.json("fileuploaded");
-  } 
-  if (err){
-    return res.json(err)
-  }
-  
- }) 
+});
+}
+
+async function uploadMultiPic(req,res){
+
+    if(req.file){
+      return  res.json({'msg': 'uploaded',
+      'file':req.file});
+    } 
+    
 
 }
+
+
 
 module.exports ={
   getData,
   getsingleUser,
-  uploadProfilePicture
+  uploadProfilePicture,
+  uploadMultiPic
 };
