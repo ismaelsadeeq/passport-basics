@@ -3,14 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const passport = require('passport')
+const passport = require('passport');
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var taskRouter = require('./routes/task')
-
-// var multerConfig = require('./config/multer');
+var taskRouter = require('./routes/task');
 
 var app = express();
 

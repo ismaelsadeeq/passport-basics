@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 
 
 async function register(req,res){
-
-  const saltRounds = 10
+ 
+  const saltRounds = 10 // https://www.npmjs.com/package/bcrypt visit to know more about bcrypt
 
   const salt = bcrypt.genSaltSync(saltRounds);
 
@@ -42,19 +42,19 @@ async function register(req,res){
 }
 
 
-async function  login(req,res){
+async function  login(req,res){ 
   const data = req.body;
   const email = data.email;
   const password = data.password;
   const user = await model.User.findOne(
-    {where:{email:email},}//attributes:['firstname','lastname']
+    {where:{email:email}}//attributes:['firstname','lastname']
     );
   if (user){
     const checkPassword = bcrypt.compareSync(password, user.password);
     if (!checkPassword) {
       return res.json('Incorrect passsword')
     } else {
-      const jwt_payload ={
+      const jwt_payload = {
         id:user.id,
       }
       const token = jwt.sign(jwt_payload,"mySecret");

@@ -12,13 +12,14 @@ async function getData(req,res){
 async function getsingleUser(req,res){
 
   const users = await model.User.findAll({where:{id:req.user.id}});
-  res.json(users)
+  console.log(req.user)
+  res.json(users);
 }
 
 
 async function uploadProfilePicture(req,res){
 
-    multerConfig.singleUpload(req, res, function(err) {
+    multerConfig.singleUpload(req, res, async function(err) {
 
     if (err instanceof multer.MulterError) {
         return res.json(err.message);
@@ -30,8 +31,9 @@ async function uploadProfilePicture(req,res){
       return res.json({"image": req.file, "msg":'Please select an image to upload'});
     }
     if(req.file){
-      return  res.json({'msg': 'uploaded',
-      'file':req.file});
+      console.log("usee>>>>>>>",req.user);
+      await model.User.update({profilePicture:req.file.path}, {where:{id:req.user.id}});
+      return  res.json({'msg': 'uploaded', 'file':req.file});
     } 
 
 });
