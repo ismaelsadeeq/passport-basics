@@ -7,7 +7,6 @@ const passport = require('passport')
 router.get('/', controller.getData)
 router.get('/profile', passport.authenticate("jwt",{session:false}), controller.getsingleUser );
 router.post('/uploadProfilePicture',passport.authenticate("jwt",{session:false}), controller.uploadProfilePicture)
-router.get('/form', (req,res)=> {
-  res.render('form')
-})
+router.get('/profilePicture', passport.authenticate("jwt",{session:false}), controller.getUserProfilePicture) 
+
 module.exports = router;

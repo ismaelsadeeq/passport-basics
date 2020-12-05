@@ -39,6 +39,11 @@ async function uploadProfilePicture(req,res){
 });
 }
 
+async function getUserProfilePicture(req,res){
+  const picture = await  model.User.findOne({where:{id:req.user.id} ,attributes:['profilePicture']});//{attributes:['profilePicture']}
+  res.json(picture);
+}
+
 async function uploadMultiPic(req,res){
 
     if(req.file){
@@ -55,5 +60,6 @@ module.exports ={
   getData,
   getsingleUser,
   uploadProfilePicture,
-  uploadMultiPic
+  uploadMultiPic,
+  getUserProfilePicture
 };
