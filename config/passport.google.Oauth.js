@@ -5,7 +5,18 @@ require('dotenv').config()
 const models = require('../models');
 const user = models.User;
 
+
 module.exports = passport => {
+  passport.serializeUser((User,done)=>{
+    done(null,User.id)
+  })
+  passport.deserializeUser((id,done)=>{
+    user.findByPk(id).then((User)=>{
+      done(null,User)
+    })
+   
+  })
+
   passport.use(
     new GoogleStrategy({
       callbackURL:'/auth/google/redirect',
@@ -15,16 +26,19 @@ module.exports = passport => {
         console.log(profile); 
         user.findOne({where:{googleId:profile.id}}).then((currentUser)=>{
           if (currentUser){
-          
-          } else{
+            console.log('user is:',currentUser);
+            done(null,currentUser);
+          } else {
             user.create(
               {
                 firstName:profile.name.givenName,
                 lastName:profile.name.familyName,
-                googleId:profile.id
+                googleId:profile.id,
+                profilePicture:profile._json.image.url
               }
             ).then((newUser)=>{
-              console.log('new user created'+newUser)
+              console.log('new user created'+ newUser)
+              done(null,newUser);
             })
           }
         })

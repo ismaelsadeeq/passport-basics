@@ -4,6 +4,7 @@ const passport = require('passport');
 
 
 const index = require('../controllers/index.controller')
+const oauthController = require('../controllers/googleOauth.Controller');
 
 /* GET home page. */
 router.post('/register',index.register)
@@ -16,6 +17,6 @@ router.get('/auth/google',passport.authenticate('google',{
 }));
 
 //callback route for google
-router.get('/auth/google/redirect',passport.authenticate('google'), )
+router.get('/auth/google/redirect',passport.authenticate('google'),oauthController.redirect )
 
 module.exports = router;

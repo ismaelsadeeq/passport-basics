@@ -42,22 +42,29 @@ async function register(req,res){
 }
 
 
-async function  login(req,res){ 
+async function login(req,res){ 
   const data = req.body;
   const email = data.email;
   const password = data.password;
-  const user = await model.User.findOne(
+  var date;
+  const user = await models.user.findOne(
     {where:{email:email}}//attributes:['firstname','lastname']
     );
   if (user){
-    const checkPassword = bcrypt.compareSync(password, user.password);
+    const checkPassword =  bcrypt.compareSync(password, user.password);
     if (!checkPassword) {
       return res.json('Incorrect passsword')
     } else {
+      if (data.remember){
+        date = 31622400; 
+      } else {
+        date = 172800 ; //3600
+      }
       const jwt_payload = {
         id:user.id,
       }
-      const token = jwt.sign(jwt_payload,"mySecret");
+       await models.isLoggedOut.destroy({where:{userId:user.id}}) 
+      const token = jwt.sign(jwt_payload,process.env.SECRET,{expiresIn:date});
       return res.json(
         { "token":token,
           "data":user,
